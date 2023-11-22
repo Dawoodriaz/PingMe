@@ -1,30 +1,30 @@
-import { Button } from "@chakra-ui/button";
-import { FormControl, FormLabel } from "@chakra-ui/form-control";
-import { Input, InputGroup, InputRightElement } from "@chakra-ui/input";
-import { VStack } from "@chakra-ui/layout";
-import { useState } from "react";
-import axios from "axios";
-import { useToast } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/button"
+import { FormControl, FormLabel } from "@chakra-ui/form-control"
+import { Input, InputGroup, InputRightElement } from "@chakra-ui/input"
+import { VStack } from "@chakra-ui/layout"
+import { useState } from "react"
+import axios from "axios"
+import { useToast } from "@chakra-ui/react"
 
-import { useNavigate } from "react-router-dom";
-// import { useHistory } from "react-router-dom";
-// import { ChatState } from "../../Context/ChatProvider";
+import { useNavigate } from "react-router-dom"
+// import { useHistory } from "react-router-dom"
+// import { ChatState } from "../../Context/ChatProvider"
 
 const Login = () => {
-  const [show, setShow] = useState(false);
-  const handleClick = () => setShow(!show);
-  const toast = useToast();
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [loading, setLoading] = useState(false);
+  const [show, setShow] = useState(false)
+  const handleClick = () => setShow(!show)
+  const toast = useToast()
+  const [email, setEmail] = useState()
+  const [password, setPassword] = useState()
+  const [loading, setLoading] = useState(false)
 
-  // // const history = useHistory();
-  // const { setUser } = ChatState();
-  const navigate = useNavigate(); // Use useNavigate instead of useHistory
+  // // const history = useHistory()
+  // const { setUser } = ChatState()
+  const navigate = useNavigate() // Use useNavigate instead of useHistory
 
 
   const submitHandler = async () => {
-    setLoading(true);
+    setLoading(true)
     if (!email || !password) {
       toast({
         title: "Please Fill all the Feilds",
@@ -32,9 +32,9 @@ const Login = () => {
         duration: 5000,
         isClosable: true,
         position: "bottom",
-      });
-      setLoading(false);
-      return;
+      })
+      setLoading(false)
+      return
     }
 
     try {
@@ -42,37 +42,37 @@ const Login = () => {
         headers: {
           "Content-type": "application/json",
         },
-      };
+      }
 
-      const { data } = await axios.post(
-        "http://localhost/api/user/login",
+      const response = await axios.post(
+        "http://localhost:5000/login",
         { email, password },
         config
-      );
-
+      )
+      console.log(response.data)
       toast({
         title: "Login Successful",
         status: "success",
         duration: 5000,
         isClosable: true,
         position: "bottom",
-      });
-      setUser(data);
-      localStorage.setItem("userInfo", JSON.stringify(data));
-      setLoading(false);
+      })
+      // setUser({data})
+      localStorage.setItem("userInfo", JSON.stringify(response.data))
+      setLoading(false)
       navigate('/chats')
     } catch (error) {
       toast({
-        title: "Error Occured!",
+        title: "Error Occurred!",
         description: error.response.data.message,
         status: "error",
         duration: 5000,
         isClosable: true,
         position: "bottom",
-      });
-      setLoading(false);
+      })
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <VStack spacing="10px">
@@ -115,14 +115,14 @@ const Login = () => {
         colorScheme="red"
         width="100%"
         onClick={() => {
-          setEmail("guest@example.com");
-          setPassword("123456");
+          setEmail("guest@example.com")
+          setPassword("123456")
         }}
       >
         Get Guest User Credentials
       </Button>
     </VStack>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

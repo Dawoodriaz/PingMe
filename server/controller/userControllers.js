@@ -37,20 +37,20 @@ const registerUser = asyncHandler( async(req, res)=>{
 
 
 const authUser = asyncHandler(async (req, res) => {
-  const { email, password } = req.body;
-  const user = await User.findOne({ email });
+  const { email, password } = req.body
+  const user = await User.findOne({ email })
 
   if (user && (await user.matchPassword(password))) {
     res.json({
       _id: user._id,
       name: user.name,
       email: user.email,
-    });
+    })
   } else {
-    res.status(401); // Unauthorized
-    throw new Error("Invalid email or password");
+    res.status(401)
+    throw new Error("Invalid email or password")
   }
-});
+})
 
 
 //@description     Get or Search all users
@@ -64,11 +64,11 @@ const allUsers = asyncHandler(async (req, res) => {
           { email: { $regex: req.query.search, $options: "i" } },
         ],
       }
-    : {};
+    : {}
 
-  const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
-  res.send(users);
-});
+  const users = await User.find(keyword).find({ _id: { $ne: req.user._id } })
+  res.send(users)
+})
 
 
 
